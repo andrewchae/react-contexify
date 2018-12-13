@@ -43,6 +43,16 @@ export interface MenuProps extends StyleProps {
    * Built-in animations are fade, flip, pop, zoom
    */
   animation?: string;
+
+  /**
+   * Unique id to identify the menu. Use to Trigger the corresponding menu
+   */
+  onShow?: Function;
+
+  /**
+   * Unique id to identify the menu. Use to Trigger the corresponding menu
+   */
+  onHide?: Function;
 }
 
 interface MenuState {
@@ -60,7 +70,9 @@ class Menu extends Component<MenuProps, MenuState> {
     theme: PropTypes.string,
     animation: PropTypes.string,
     className: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
+    onShow: PropTypes.func,
+    onHide: PropTypes.func
   };
 
   state = {
@@ -121,6 +133,10 @@ class Menu extends Component<MenuProps, MenuState> {
 
     this.unBindWindowEvent();
     this.setState({ visible: false });
+
+    if (this.props.onHide) {
+      this.props.onHide();
+    }
   };
 
   handleKeyboard = (e: KeyboardEvent) => {
@@ -198,6 +214,10 @@ class Menu extends Component<MenuProps, MenuState> {
       },
       this.setMenuPosition
     );
+
+    if (this.props.onShow) {
+      this.props.onShow();
+    }
   };
 
   render() {
